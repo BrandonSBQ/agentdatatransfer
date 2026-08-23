@@ -1,0 +1,295 @@
+syntax = "proto3";
+
+package cooperation.api.v1;
+
+import "google/protobuf/any.proto";
+
+// ====================  CorpoManagerRpc — 最新企业档案查询 (RDWT) ====================
+
+service CorpoManagerRpc {
+  rpc queryCorpoProfile (CorpProfileManagerReq) returns (CorpProfileManagerResp);
+  rpc QueryBoardResolution (CorpoManagerReq) returns (CorpoRpcServiceResp);
+  rpc QueryProfileHistories (CorpoManagerReq) returns (CorpoRpcServiceResp);
+  rpc queryShareHolderStructure (CorpoManagerShareHolderReq) returns (CorpoManagerSHStuctureResp);
+}
+
+message CorpProfileManagerReq {
+  int64 corpId = 1;
+  int32 version = 2;
+  string fiatWalletId = 3;
+  string dgWalletId = 4;
+  string ecirCode = 5;
+}
+
+message CorpProfileManagerResp {
+  int32 code = 1;
+  string msg = 2;
+  CorpEntityManagerProto data = 3;
+}
+
+message CorpEntityManagerProto {
+  int64 corpId = 1;
+  string ciNumber = 2;
+  string brNumber = 3;
+  string companyNameEn = 4;
+  string companyNameLocal = 5;
+  string incorporationPlace = 6;
+  int32 bizEntityType = 7;
+  int32 isFinInst = 8;
+  string finRegPlace = 9;
+  string regulatorName = 10;
+  string licenseType = 11;
+  int32 isListedCompany = 12;
+  string listingPlace = 13;
+  string exchangeName = 14;
+  string stockCode = 15;
+  int32 isGovOwned = 16;
+  string govOwnedPlace = 17;
+  int64 incorporationDate = 18;
+  string website = 19;
+  string registeredPlace = 20;
+  string registeredAddress = 21;
+  string operatingPlace = 22;
+  string operatingAddress = 23;
+  string remark = 24;
+  int64 userId = 25;
+  int32 quorum = 26;
+  string brKey = 27;
+  string ciKey = 28;
+  string logoUrl = 29;
+  int32 isSameAddress = 30;
+  int32 isProfileCtrl = 31;
+  int32 isDirector = 32;
+  int32 isUbo = 33;
+  int32 status = 34;
+  string reason = 35;
+  string number = 36;
+  string elaborativeDescription = 37;
+  repeated CorpoFileManagerProto files = 38;
+  string ip = 39;
+  string userAgent = 40;
+  string blNumber = 41;
+  string registeredCapital = 42;
+  int32 active = 43;
+  int32 directorNum = 44;
+  string chnRegisteredAddressEn = 46;
+  repeated CorpShareHolderManagerProto specialShareholders = 48;
+  repeated CorpElaborativeManageProto entityElaboratives = 49;
+  repeated CorpBizManageProto biz = 50;
+  repeated CorpElaborativeManageProto shElaboratives = 51;
+  string ecirCode = 52;
+  repeated CorpShareHolderManagerProto shareholders = 53;
+  int32 boardStatus = 54;
+  repeated CorpBizDtoManageProto bizDto = 55;
+  repeated CorpoUserManagerProto peoples = 56;
+  int32 auditStatus = 57;
+  repeated FiatAccountProto fiatAccount = 58;
+  BankShareAnswer fromAnswer = 59;
+}
+
+message CorpoFileManagerProto {
+  int64 corpId = 1;
+  int64 userId = 2;
+  string fileName = 3;
+  int32 fileType = 4;
+  string fileFormat = 5;
+  string filePath = 6;
+  string fileDesc = 7;
+  int64 fileId = 8;
+  string fileUrl = 9;
+  string fileKey = 10;
+  int64 objId = 11;
+}
+
+message CorpoUserManagerProto {
+  int64 objId = 1;
+  int64 userId = 2;
+  int64 corpId = 3;
+  string nameCn = 4;
+  string firstName = 5;
+  string lastName = 6;
+  string idNumber = 7;
+  int32 roles = 8;
+  string areaCode = 9;
+  string mobileNumber = 10;
+  string email = 11;
+  int32 gender = 12;
+  string region = 13;
+  int32 idType = 14;
+  string idIssuingJurisdiction = 15;
+  string idIssuingAuthority = 16;
+  int64 idDateOfIssuing = 17;
+  int64 idDateOfExpiry = 18;
+  bool needLink = 19;
+  bool isMandateUser = 20;
+  int64 birthdate = 21;
+  string lastNameEnConflict = 22;
+  string firstNameEnConflict = 23;
+  string nameCnConflict = 24;
+  repeated CorpElaborativeManageProto elaboratives = 25;
+  int32 isLinked = 26;
+  int32 isBinded = 27;
+  int32 mandateStatus = 28;
+  string inviteCode = 29;
+  bool creatorIdvDone = 30;
+}
+
+message CorpShareHolderManagerProto {
+  int64 subId = 1;
+  string lastNameEn = 2;
+  string firstNameEn = 3;
+  string nameCn = 4;
+  int32 type = 5;
+  string incorporationPlace = 6;
+  int32 bizEntityType = 7;
+  int32 isFinInst = 8;
+  string finRegPlace = 9;
+  string regulatorName = 10;
+  string licenseType = 11;
+  int32 isGovOwned = 12;
+  string govOwnedPlace = 13;
+  int32 isListedCompany = 14;
+  string listingPlace = 15;
+  string exchangeName = 16;
+  string stockCode = 17;
+  int64 peopleId = 18;
+  int64 corpId = 19;
+  int64 objId = 20;
+  double ownedSharesPercent = 21;
+  int32 ownedSharesNumber = 22;
+  int32 level = 23;
+  int64 sameId = 24;
+  int32 percentOrNumber = 25;
+  int32 totalShares = 26;
+  bool isUbo = 27;
+  double sameTotalPercent = 28;
+}
+
+message CorpElaborativeManageProto {
+  string titleType = 1;
+  string titleMemo = 2;
+  int32 elabType = 3;
+  string elaboration = 4;
+  repeated CorpoFileManagerProto fileKeyList = 5;
+  int64 bizId = 6;
+  int64 elabId = 7;
+}
+
+message CorpBizManageProto {
+  int64 bizId = 1;
+  repeated CorpElaborativeManageProto elaboratives = 2;
+}
+
+message CorpBizDtoManageProto {
+  string yearsInBusiness = 1;
+  string businessLocations = 2;
+  string lastYearSales = 3;
+  string industryCode = 4;
+  string subIndustryCode = 5;
+  string industryDetails = 6;
+  int64 bizId = 7;
+}
+
+message FiatAccountProto {
+  string walletId = 1;
+  string accountName = 2;
+}
+
+message BankShareAnswer {
+  string purposeOfAccountOpening = 1;
+  string expectedBusinessCounterparties = 2;
+  string expectedVolumeOfTransactionsPerMonth = 3;
+  bool handlesCustomerMoney = 4;
+}
+
+// ====================  CorpoManagerRpc additional types ====================
+
+message CorpoManagerReq {
+  int64 corpId = 1;
+  int32 model = 2;
+  repeated string fieldKeys = 3;
+  string evidenceKey = 4;
+  int64 bankId = 5;
+  int64 peopleId = 6;
+  int64 obj_id = 7;
+  int64 hisId = 8;
+  string fieldKey = 9;
+  bool isMask = 10;
+}
+
+message CorpoRpcServiceResp {
+  int32 code = 1;
+  string msg = 2;
+  google.protobuf.Any data = 3;
+}
+
+message BankRespProto {
+  string groups = 1;
+}
+
+message CorpoManagerShareHolderReq {
+  int64 hisId = 1;
+  int64 corpId = 2;
+  int64 shareHolderId = 3;
+}
+
+message CorpoManagerSHStuctureResp {
+  repeated StockStructureProto shareholders = 1;
+  repeated StockStructureProto ubos = 2;
+}
+
+message CorpHistoriesList {
+  repeated CorpHistoriesProto histories = 1;
+}
+
+message CorpHistoriesProto {
+  int64 corpId = 1;
+  int64 flowId = 2;
+  string extend = 3;
+  int32 type = 4;
+  int64 objId = 5;
+  int64 createTime = 6;
+  int32 version = 7;
+  string chain_file_key = 8;
+  string nameScreeningSerial = 9;
+}
+
+message StockStructureProto {
+  int64 obj_id = 1;
+  int64 subId = 2;
+  string last_name_en = 3;
+  string first_name_en = 4;
+  string name_cn = 5;
+  int32 type = 6;
+  string incorporation_place = 7;
+  int32 biz_entity_type = 8;
+  int32 is_fin_inst = 9;
+  int32 is_gov_owned = 10;
+  int32 is_listed_company = 11;
+  double owned_shares_percent = 12;
+  int32 owned_shares_number = 13;
+  int32 total_shares = 14;
+  int32 level = 15;
+  int32 status = 16;
+  string audit_reason = 17;
+  int32 sort = 18;
+  int64 corp_id = 19;
+  bool is_key_people = 20;
+  bool is_ecir_corp = 21;
+  repeated StockStructureProto sub_list = 22;
+  int64 total = 23;
+  string fin_reg_place = 24;
+  string regulator_name = 25;
+  string license_type = 26;
+  string gov_owned_place = 27;
+  string listing_place = 28;
+  string exchange_name = 29;
+  string stock_code = 30;
+  int32 shareholder_type = 31;
+  int64 people_id = 32;
+  int64 sameId = 33;
+  double root_percent = 34;
+  double same_total_percent = 35;
+  int32 srhVerify = 36;
+}
+

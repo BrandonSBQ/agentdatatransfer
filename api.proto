@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "code.rd.group/rd/proto/common/api/v1;v1";
+option java_multiple_files = true;
+option java_package = "group.rd.proto.common";
+
+import "core/api/v1/query.proto";
+
+message DataResult {
+  int32 code = 1; //返回成功，或者失败；成功1，其他失败
+  string msg = 2; //失败原因
+}
+
+message LongDataRequest {
+  int64 data = 1;
+}
+
+message RepeatedLongDataRequest {
+  repeated int64 data = 1;
+}
+
+message SimpleBoolResponse {
+  core.api.v1.Result result = 1;
+  bool data = 2;
+}
+
+message ChargeItem {
+  string currency = 1;
+  int64 amount = 2;
+}

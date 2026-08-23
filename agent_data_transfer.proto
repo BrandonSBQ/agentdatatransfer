@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package agentdatatransfer.v1;
+
+// gRPC 入口(与 HTTP /cooperation/* 等价),监听 9090。
+// data 字段为 JSON 字符串,内容与 HTTP 返回的 data 一致。
+
+message CompanyIdReq {
+  string company_id = 1;
+}
+
+message JsonResp {
+  int32 code = 1;
+  string msg = 2;
+  string data = 3;
+}
+
+service AgentDataTransferRpc {
+  rpc QueryProfile (CompanyIdReq) returns (JsonResp);
+  rpc QueryEntity (CompanyIdReq) returns (JsonResp);
+  rpc QueryBusiness (CompanyIdReq) returns (JsonResp);
+  rpc QueryAuthorizations (CompanyIdReq) returns (JsonResp);
+  rpc QueryShareholders (CompanyIdReq) returns (JsonResp);
+}
