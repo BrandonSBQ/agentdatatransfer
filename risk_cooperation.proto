@@ -1,0 +1,182 @@
+syntax = "proto3";
+
+package assets.api.v1;
+
+option go_package = "code.rd.group/proto/assets/api/v1;v1";
+
+// Standalone proto extracted from cooperation.proto — only risk-related types.
+
+message FileDto {
+  string fileKey = 1;
+  string fileName = 2;
+}
+
+message RiskDueDiligenceDataReq {
+  int64 corpId = 1;
+}
+
+// 风控开户所需字段
+message RiskOnboardDetail {
+  RiskEntityDetail riskEntityDetail = 1;
+  repeated RiskBusinessDetail riskBusinessDetails = 2;
+  repeated RiskKeyPeople riskKeyPeoples = 3;
+  string emailAddress = 4;
+  RiskAdditionalQuestion riskAdditionalQuestion = 5;
+  string shareholderList = 6;
+}
+
+// 风控企业详情
+message RiskEntityDetail {
+  // 英文公司名稱
+  string businessEnglishName = 1;
+  // 中文公司名稱
+  string businessChineseName = 2;
+  // 商業登記證號碼
+  string registerBusinessNumber = 3;
+  // 註冊地點
+  string placeOfIncorporation = 4;
+  // 企業類型
+  string businessType = 5;
+  // 公司註冊日期
+  string companyIncorporationDate = 6;
+  // 註冊國家/地區
+  string registeredCountryRegion = 7;
+  // 註冊地址
+  string registeredAddress = 8;
+  // 主要營業地點
+  string primaryOperatingPlace = 9;
+  // 主要營業地址
+  string primaryOperatingAddress = 10;
+  // 受監管金融機構
+  bool isRegulatedFinancialInstitution = 11;
+  // 企業是上市公司
+  bool isListedCompany = 12;
+  // 企業是政府擁有企業
+  bool isGovernmentOwnedEnterprise = 13;
+  // 商業登記證
+  repeated FileDto businessRegistrationCertificate = 14;
+  // 公司註冊證書
+  repeated FileDto certificateOfIncorporation = 15;
+  // 公司註冊證書號碼
+  string certificateOfIncorporationNumber = 16;
+  // 公司章程及細則
+  repeated FileDto memorandumAndArticlesOfAssociation = 17;
+  // 股東結構文件
+  repeated FileDto shareholderStructureDocument = 18;
+}
+
+message RiskBusinessDetail {
+  // 營業地點
+  string locationOfBusiness = 1;
+  // 行業詳情
+  string industryDetails = 2;
+  // 營業年數
+  string yearsInBusiness = 3;
+  // 去年銷營業額
+  string salesTurnoverPreviousYear = 4;
+  // 子行业
+  string subIndustry = 5;
+}
+
+message RiskKeyPeople {
+  // 英文名字
+  string lastNameInEnglish = 1;
+  // 英文姓氏
+  string firstNameInEnglish = 2;
+  // 中文名字
+  string nameInChinese = 3;
+  // 證件發放國籍/地區
+  string idIssuingCountryOrRegion = 4;
+  // 證件類型
+  string idType = 5;
+  // 證件號碼
+  string idNumber = 6;
+  // 是否為董事
+  bool isDirector = 7;
+  // 是否做為授權簽署人
+  bool isAuthorizedSignatory = 8;
+  // 是否為最終受益人
+  bool isUltimateBeneficialOwner = 9;
+  // 實際持股比例
+  string actualOwnedShares = 10;
+}
+
+message RiskAdditionalQuestion {
+  // 開戶目的
+  string purposeOfAccountOpening = 1;
+  // 預期交易對手方（可選）
+  string expectedBusinessCounterparties = 2;
+  // 預期每月交易量
+  string expectedVolumeOfTransactionsPerMonth = 3;
+  // 是否處理客戶資金（例如提供貨幣兌換、投資管理或管理全權委託賬戶）
+  bool handlesCustomerMoney = 4;
+}
+
+message RiskCompanySearchData {
+  repeated FileDto companySearchFile = 1;
+  string thirdPartApi = 2;
+}
+
+message RiskIDVInfoResp {
+  repeated RiskIDVInfo riskIDVInfo = 1;
+}
+
+message RiskIDVInfo {
+  // Sub ID
+  string subId = 1;
+  // Sub ID 類型
+  string subIdType = 2;
+  // 英文名（名）
+  string englishFirstName = 3;
+  // 英文名（姓）
+  string englishLastName = 4;
+  // 中文名
+  string chineseName = 5;
+  // 性別
+  string gender = 6;
+  // 出生日期
+  string dateOfBirth = 7;
+  // 證件類型
+  string idType = 8;
+  // 證件號碼
+  string idNumber = 9;
+  // 證件簽發地
+  string idIssuingJurisdiction = 10;
+  // 證件簽發機關
+  string idIssuingAuthority = 11;
+  // 證件簽發日期
+  string idDateOfIssuing = 12;
+  // 證件有效期（可選）
+  string idDateOfExpiry = 13;
+  // （僅 HKID）符號
+  string hkidSymbols = 14;
+  // （僅 HKID）中文電碼
+  string hkidChineseCommercialCode = 15;
+  // （僅 HKID）永久性居民身份
+  string hkidPermanentResidentStatus = 16;
+  // （僅 HKID）最早簽發日期
+  string hkidEarliestIssueDate = 17;
+  // 通过状态
+  int32 passStatus = 18;
+}
+
+// 通过 ecirCode（即 HTTP 入参 company_id）查询企业基础信息，用于解析 corpId。
+// 字段定义与 proto/assets cooperation.proto 中的 GetCompanyInfoReq/Resp 保持一致。
+message GetCompanyInfoReq {
+  int64 corpId = 1;
+  string ecirCode = 2;
+}
+
+message GetCompanyInfoResp {
+  int64 corpId = 1;
+  string ecirCode = 2;
+  string companyNameEn = 3;
+  string companyNameZh = 4;
+}
+
+service CompanyRpc {
+  rpc riskOnboardDetailData(RiskDueDiligenceDataReq) returns(RiskOnboardDetail);
+  rpc riskCompanySearchData(RiskDueDiligenceDataReq) returns(RiskCompanySearchData);
+  rpc riskIDVInfoData(RiskDueDiligenceDataReq) returns(RiskIDVInfoResp);
+  rpc getCompanyInfo(GetCompanyInfoReq) returns(GetCompanyInfoResp);
+}

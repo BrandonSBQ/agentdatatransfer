@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package risk.extract.v1;
+
+option go_package = "code.rd.group/proto/risk/extract/v1;v1";
+
+// ==================== 文件传输对象 ====================
+message FileDto {
+  string fileKey = 1;
+  string fileName = 2;
+}
+
+// ==================== 风控开户主结构 ====================
+message RiskOnboardDetail {
+  RiskEntityDetail riskEntityDetail = 1;
+  repeated RiskBusinessDetail riskBusinessDetails = 2;
+  repeated RiskKeyPeople riskKeyPeoples = 3;
+  string emailAddress = 4;                          // 联系邮箱，取自企业信息
+  RiskAdditionalQuestion riskAdditionalQuestion = 5;
+  string shareholderList = 6;                      // 股东结构文本或序列化数据
+}
+
+// ==================== 企业详情（风控字段） ====================
+message RiskEntityDetail {
+  // 英文公司名称
+  string businessEnglishName = 1;          // → companyNameEn
+  // 中文公司名称
+  string businessChineseName = 2;          // → companyNameLocal
+  // 商业登记证号码
+  string registerBusinessNumber = 3;       // → brNumber
+  // 公司注册证书号码
+  string certificateOfIncorporationNumber = 4; // → ciNumber
+  // 注册地点（国家/地区）
+  string placeOfIncorporation = 5;         // → incorporationPlace
+  // 企业类型（商业实体类型）
+  string businessType = 6;                 // → bizEntityType（转为字符串或枚举）
+  // 公司注册日期
+  string companyIncorporationDate = 7;     // → incorporationDate（时间戳转字符串）
+  // 注册国家/地区（同注册地点）
+  string registeredCountryRegion = 8;
+  // 注册地址
+  string registeredAddress = 9;            // → registeredAddress
+  // 主要营业地点
+  string primaryOperatingPlace = 10;       // → operatingPlace
+  // 主要营业地址
+  string primaryOperatingAddress = 11;     // → operatingAddress
+  // 是否为受监管金融机构
+  bool isRegulatedFinancialInstitution = 12; // → isFinInst == 1
+  // 是否为上市公司
+  bool isListedCompany = 13;               // → isListedCompany == 1
+  // 是否为政府拥有企业
+  bool isGovernmentOwnedEnterprise = 14;   // → isGovOwned == 1
+  // 商业登记证文件
+  repeated FileDto businessRegistrationCertificate = 15; // 原files中筛选
+  // 公司注册证书文件
+  repeated FileDto certificateOfIncorporation = 16;
+  // 公司章程及细则文件
+  repeated FileDto memorandumAndArticlesOfAssociation = 17;
+  // 股东结构文件
+  repeated FileDto shareholderStructureDocument = 18;
+}
+
+// ==================== 业务详情（风控字段） ====================
+message RiskBusinessDetail {
+  // 营业地点（最多3个）
+  string locationOfBusiness = 1;           // → businessLocations
+  // 行业详情（补充描述）
+  string industryDetails = 2;              // → industryDetails
+  // 营业年数（区间描述）
+  string yearsInBusiness = 3;              // → yearsInBusiness
+  // 去年营业额（区间）
+  string salesTurnoverPreviousYear = 4;    // → lastYearSales
+  // 子行业编码
+  string subIndustry = 5;                  // → subIndustryCode
+}
+
+// ==================== 关键人物（风控字段） ====================
+message RiskKeyPeople {
+  // 英文名字（名）
+  string firstNameInEnglish = 1;           // → firstName
+  // 英文姓氏
+  string lastNameInEnglish = 2;            // → lastName
+  // 中文名字
+  string nameInChinese = 3;                // → nameCn
+  // 证件发放国家/地区
+  string idIssuingCountryOrRegion = 4;     // → idIssuingJurisdiction
+  // 证件类型
+  string idType = 5;                       // → idType（转为字符串）
+  // 证件号码
+  string idNumber = 6;                     // → idNumber
+  // 是否为董事
+  bool isDirector = 7;                     // → roles包含董事位
+  // 是否为授权签署人
+  bool isAuthorizedSignatory = 8;          // → roles包含授权签署
+  // 是否为最终受益人
+  bool isUltimateBeneficialOwner = 9;      // → roles包含UBO
+  // 实际持股比例（百分比）
+  string actualOwnedShares = 10;           // 从股东结构计算或直接提供
+}
+
+// ==================== 额外问询 ====================
+message RiskAdditionalQuestion {
+  string purposeOfAccountOpening = 1;
+  string expectedBusinessCounterparties = 2;
+  string expectedVolumeOfTransactionsPerMonth = 3;
+  bool handlesCustomerMoney = 4;
+}
+
+// ==================== 企业查册数据 ====================
+message RiskCompanySearchData {
+  repeated FileDto companySearchFile = 1;
+  string thirdPartApi = 2;
+}
+
+// ==================== IDV 信息 ====================
+message RiskIDVInfoResp {
+  repeated RiskIDVInfo riskIDVInfo = 1;
+}
+
+message RiskIDVInfo {
+  string subId = 1;                        // → userId
+  string subIdType = 2;                    // → 用户类型
+  string englishFirstName = 3;             // → firstName
+  string englishLastName = 4;              // → lastName
+  string chineseName = 5;                  // → nameCn
+  string gender = 6;                       // → gender（转字符串）
+  string dateOfBirth = 7;                  // → dateOfBirth（时间戳转字符串）
+  string idType = 8;                       // → idType
+  string idNumber = 9;                     // → idNumber
+  string idIssuingJurisdiction = 10;       // → idIssuingJurisdiction
+  string idIssuingAuthority = 11;          // → idIssuingAuthority
+  string idDateOfIssuing = 12;             // → idDateOfIssuing
+  string idDateOfExpiry = 13;              // → idDateOfExpiry
+  int32 passStatus = 14;                   // IDV 状态（1通过等）
+  // 以下字段为HKID特有，如需可补充
+  string hkidSymbols = 15;
+  string hkidChineseCommercialCode = 16;
+  string hkidPermanentResidentStatus = 17;
+  string hkidEarliestIssueDate = 18;
+}
+
+// ==================== 企业基本信息查询 ====================
+message GetCompanyInfoReq {
+  int64 corpId = 1;
+  string ecirCode = 2;
+}
+
+message GetCompanyInfoResp {
+  int64 corpId = 1;
+  string ecirCode = 2;
+  string companyNameEn = 3;
+  string companyNameZh = 4;
+}
+
+// ==================== 风控服务接口 ====================
+service CompanyRpc {
+  // 获取风控开户所需完整数据（企业详情 + 业务 + 关键人物）
+  rpc riskOnboardDetailData(RiskDueDiligenceDataReq) returns(RiskOnboardDetail);
+
+  // 获取企业查册数据（第三方搜索结果）
+  rpc riskCompanySearchData(RiskDueDiligenceDataReq) returns(RiskCompanySearchData);
+
+  // 获取IDV认证信息
+  rpc riskIDVInfoData(RiskDueDiligenceDataReq) returns(RiskIDVInfoResp);
+
+  // 根据ecirCode或corpId查询企业基本信息
+  rpc getCompanyInfo(GetCompanyInfoReq) returns(GetCompanyInfoResp);
+}
+
+// 通用请求（携带企业ID）
+message RiskDueDiligenceDataReq {
+  int64 corpId = 1;
+}

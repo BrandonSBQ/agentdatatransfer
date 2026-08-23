@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package assets.api.v1;
+
+option go_package = "code.rd.group/proto/assets/api/v1;v1";
+
+// Standalone proto extracted from compliance.proto — only name screening risk types.
+
+enum CoopType {
+  _CoopType = 0;
+  entity = 1;
+  individual = 2;
+}
+
+message RiskNameScreeningResultReq {
+  int64 corpId = 1;
+}
+
+message RiskNameScreeningResultResp {
+  repeated RiskNameScreeningResultInfoDto infoDto = 1;
+}
+
+message RiskNameScreeningResultInfoDto {
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  int32 gender = 4;
+  string date = 5;
+  string idNumber = 6;
+  string citizenship = 7;
+  string permanentResidence = 8;
+  string remark = 10;
+  CoopType type = 11;
+  RiskNameScreeningResultPageDto result = 12;
+  int64 updateTime = 13;
+}
+
+message RiskNameScreeningResultPageDto {
+  int32 totalCount = 1;
+  repeated RiskNameScreeningResultDataDto data = 2;
+}
+
+message RiskNameScreeningResultDataDto {
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  int32 gender = 4;
+  repeated string date = 5;
+  repeated string idNumber = 6;
+  repeated string citizenship = 7;
+  repeated string permanentResidence = 8;
+  repeated string hitTag = 9;
+  string hitRemark = 10;
+  string hitResult = 12;
+  string profileId = 13;
+  string score = 14;
+  repeated string address = 15;
+  string title = 16;
+}
+
+service NameScreeningRpc {
+  rpc riskNameScreeningResult(RiskNameScreeningResultReq) returns(RiskNameScreeningResultResp);
+}

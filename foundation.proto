@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package foundation.api.v1;
+
+service SysItemApp {
+  rpc ReadByAnnexes (SystemItemReq) returns (SysItemListRep);
+}
+
+message SystemItemReq {
+  repeated SysItemAnnexReq request = 1;
+}
+
+message SysItemAnnexReq {
+  string itemId = 1;
+  string annex = 2;
+  string value = 3;
+}
+
+message SysItemListRep {
+  Reason reason = 1;
+  repeated SysItemDto data = 2;
+}
+
+message Reason {
+  int32 code = 1;
+  string reason = 2;
+  string message = 3;
+}
+
+message SysItemDto {
+  string objId = 1;
+  string itemId = 2;
+  string annexa = 3;
+  string annexb = 4;
+  string annexc = 5;
+  string annexd = 6;
+  string annexe = 7;
+  int64 seq = 8;
+  int32 active = 9;
+  int64 createTime = 10;
+  int64 updateTime = 11;
+  int64 createId = 12;
+  int64 updateId = 13;
+}

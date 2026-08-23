@@ -1,0 +1,428 @@
+syntax = "proto3";
+
+package screening.api.v1;
+
+option go_package = "code.rd.group/rd/proto/screening/api/v1;v1";
+
+option java_generic_services = true;
+option java_multiple_files = true;
+option java_package = "group.rd.proto.screening.api.v1";
+import "google/protobuf/empty.proto";
+
+message GetMatchedManualCompletedInfoRequest {
+  enum Type {
+    DEFAULT = 0;
+    ENTITY = 1;
+    INDIVIDUAL = 2;
+  }
+
+  Type type = 1;
+  string name = 2;
+  string idNumber = 3;
+  string djId = 4;
+}
+
+message GetMatchedManualCompletedInfoResponse {
+  int32 code = 1;
+  string msg = 2;
+  int64 infoId = 3;
+}
+
+service NameScreeningRpc{
+  rpc PushNameScreening(PushNameScreeningReq)returns(Result);
+  rpc NameScreeningBasicInfo(IdReq) returns(NameScreeningBasicInfoDto);
+  rpc NameScreeningStatus(IdReq)returns(NameScreeningStatusResp);
+  rpc NameScreeningManualStatusUpdate(NameScreeningManualStatusUpdateDto)returns(NameScreeningManualStatusUpdateResp);
+  rpc NameScreeningResult(NameScreeningResultPageReq)returns(NameScreeningResultInfoDto);
+  rpc NameScreeningDetail(IdReq)returns(NameScreeningDetailDto);
+  rpc NameScreeningSearch(NameScreeningSearchReq)returns(NameScreeningSearchResp);
+  rpc DeleteOngoingScreening(DeleteOngoingRequest)returns(Result);
+  rpc NameScreeningManualStatusCompleted(ManualStatusCompletedReq)returns(Result);
+  rpc GetMatchedManualCompletedInfoId(GetMatchedManualCompletedInfoRequest) returns (GetMatchedManualCompletedInfoResponse);
+  rpc RiskNameScreeningResult(RiskNameScreeningResultReq) returns(RiskNameScreeningResultResp);
+}
+
+service NewNameScreeningRpc{
+  rpc PushNewNameScreening(PushNewNameScreeningReq)returns(Result);
+  rpc NewNameScreeningManualStatusUpdate(NameScreeningManualStatusUpdateDto)returns(NameScreeningManualStatusUpdateResp);
+  rpc NewNameScreeningStatus(NewNameScreeningStatusDto)returns(NewNameScreeningStatusResp);
+}
+
+service AmlQuestionnaireRpc{
+  rpc CreateAmlQuestionnaireTask(CreateAmlQuestionnaireTaskReq)returns(Result);
+  rpc CloseRelateBrmsInstance(CloseRelateBrmsInstanceReq) returns(Result);
+}
+
+service CaseService {
+  rpc compensateCreateManualCase(CompensateCreateManualCaseReq)returns(Result);
+  rpc fillCaseRelatedId(RebuildTaskReq)returns(Result);
+  rpc rebuildTask(RebuildTaskReq)returns(Result);
+  rpc transferNsCase(TransferNsCaseReq)returns(Result);
+  rpc QueryOnboardingTask(QueryOnboardingTaskReq) returns (QueryOnboardingTaskResp);
+  rpc hisCaseOverFlowReport(google.protobuf.Empty) returns(Result);
+  rpc queryApplicationTime(QueryApplicationTimeReq) returns(QueryApplicationTimeResponse);
+  rpc updtateHistoryPendingStatus(google.protobuf.Empty) returns(Result);
+  rpc queryAccountOpeningTask(QueryAccountOpeningTaskReq) returns(QueryAccountOpeningTaskResp);
+}
+
+message QueryAccountOpeningTaskReq {
+  int32 page = 1;
+  int32 pageSize = 2;
+}
+message QueryAccountOpeningTaskResp {
+  int32 code = 1;
+  string message = 2;
+  repeated AccountOpeningTask tasks = 3;
+}
+
+message AccountOpeningTask {
+  int64 taskId = 1;
+  int64 corpId = 2;
+  string name = 3;
+  string caseType = 4;
+  string expireDate = 5;
+  string caseTrigger = 6;
+  string priority = 7;
+  string status = 8;
+  string pendingStatus = 9;
+  string processingTime = 10;
+  string maker = 11;
+  string checker = 12;
+  string compliance = 13;
+  string sManagement = 14;
+  string createTime = 15;
+  string finishTime = 16;
+  string lastUpdatedTime = 17;
+  string kaOrMass = 18;
+}
+
+service TransferFileRpc{
+  rpc TransferAmlFile(TransferFileReq)returns(Result);
+  rpc UpdateCaseInstance(UpdateCaseInstanceReq)returns(Result);
+}
+
+service AccountOpeningRpc{
+  rpc updateOnBoardingTaskExpireTime(google.protobuf.Empty)returns(Result);
+  rpc onboardingCreateCase(OnboardingReviewReq)returns(Result);
+}
+// 银行开户拒绝失败案例
+service BankRejectionRpc{
+  rpc CreateBankRejectionTask(CreateBankRejectionTaskReq)returns(Result);
+}
+message CreateBankRejectionTaskReq{
+  int64 applicationId = 1;
+  string bankId = 2;
+  string comment = 3;
+  int64 rejectTime = 4;
+  int64 corpId = 5;
+}
+message QueryOnboardingTaskReq {
+  repeated int64 instanceObjIds = 1;
+}
+
+message QueryOnboardingTaskResp {
+  int32 code = 1;
+  string msg = 2;
+  repeated QueryOnboardingTaskEntry entries = 3;
+}
+
+message QueryOnboardingTaskEntry {
+  int64 instanceObjId = 1;
+  int64 taskId = 2;
+  int64 creationTime = 3;
+}
+
+message UpdateCaseInstanceReq {
+  repeated int64 objId = 1;
+}
+
+message TransferFileReq {
+  int32 caseType = 1;
+  repeated int64 objId = 2;
+}
+
+message RebuildTaskReq {
+  repeated int64 objIds = 1;
+}
+
+
+message NameScreeningManualStatusUpdateResp {
+  bool totalComplete = 1;
+}
+
+message NameScreeningManualStatusUpdateDto{
+  int64 infoId = 1;
+  string result = 2;
+  string remark = 3;
+}
+
+message NameScreeningStatusResp {
+  repeated NameScreeningStatusDto data = 1;
+}
+
+message NewNameScreeningStatusDto{
+  int64 corpId = 1;
+}
+
+message NewNameScreeningStatusResp {
+  bool result = 1;
+}
+
+message NameScreeningStatusDto {
+  int64 id = 1; // infoId
+  string chineseName = 2; // 中文名 外部输入
+  string englishName = 3; // 英文名 外部输入
+  int32 gender = 4; // 性别 外部输入
+  string date = 5; // 出生日期、注册日期 外部输入
+  string idNumber = 6;  // 证件号 外部输入
+  string citizenship = 7; // 国籍、注册地 外部输入
+  string residence = 8; // 居住地、所在地 外部输入
+  string remark = 9; // 备注
+  CoopType type = 10; // 类型 ：个人；企业 外部输入
+  repeated string identity = 11;  // 身份 外部输入
+  int32 onHit = 12; // inconclusive_count
+  int32 offHit = 13; // false_count
+  bool withCompanySearch = 14; // 是否参与了企业查册 外部输入
+  NameScreeningStatus status = 15; // 姓名筛选状态
+}
+
+message IdReq {
+  //主键id
+  int64 id = 1;
+  int64 relateId = 2;
+}
+
+message NameScreeningSearchResp{
+  int64 endTime = 1;
+}
+
+enum CoopType{
+  _CoopType = 0;
+  entity = 1;
+  individual = 2;
+  payin = 3;
+  payout = 4;
+}
+
+message Result {
+  int32 code = 1;
+  string msg = 2;
+  string opt = 3;
+}
+
+message NameScreeningDetailDto{
+  string jsonData = 1;
+}
+
+message NameScreeningResultInfoDto{
+  int64 id = 1;
+  string chineseName = 2; //
+  string englishName = 3;
+  int32 gender = 4;
+  string date = 5;
+  string idNumber = 6;
+  string citizenship = 7;
+  string permanentResidence = 8;
+  string remark = 10;
+  CoopType type = 11;
+  NameScreeningResultPageDto result = 12;
+  int32 hitWatchList = 13;
+  map<string, string> remarks = 14;
+}
+
+message NameScreeningResultDataDto{
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  int32 gender = 4;
+  repeated string date = 5;
+  repeated string idNumber = 6;
+  repeated string citizenship = 7;
+  repeated string permanentResidence = 8;
+  repeated string hitTag = 9;
+  string hitRemark = 10;
+  string hitResult = 12;
+  bool attention = 11;
+  string relateId = 13;
+}
+
+message NameScreeningResultPageDto {
+  int32 totalCount = 1;
+  repeated NameScreeningResultDataDto data = 2;
+}
+
+message BasicInfoItemDto{
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  repeated string identity = 4;
+  int32 onHit = 5;
+  int32 offHit = 6;
+  bool withCompanySearch = 7;
+}
+
+enum NameScreeningStatus{
+  _NameScreeningStatus = 0;
+  pending = 1;
+  autoFinish = 2;
+  expire = 3;
+  manualPending = 4;
+  manualFinish = 5;
+}
+
+message NameScreeningBasicInfoDto{
+  repeated BasicInfoItemDto individual = 1;
+  repeated BasicInfoItemDto entity = 2;
+}
+
+message NameScreeningResultPageReq{
+  int32 page = 1;
+  int32 pageSize = 2;
+  int64 id = 3;
+  ResultType type = 4;
+}
+
+enum ResultType{
+  _ResultType = 0;
+    uncertain = 1;
+}
+
+enum VendorType{
+  DefaultType = 0;
+  OriginType = 1;
+  FirstType = 2;
+}
+
+message NameScreeningSearchReq{
+  int64 id = 1;
+  int32 times = 2;
+}
+
+message PushNameScreeningReq{
+  int64 corpId = 1;
+  repeated CorpScreening corpData = 2;
+  repeated PersonScreening personData = 3;
+  int64 applicationId = 4;
+  string applicationTag = 5;
+}
+
+message PushNewNameScreeningReq{
+  int64 corpId = 1;
+  int64 accountId = 2;
+  repeated CorpScreening corpData = 3;
+  repeated PersonScreening personData = 4;
+  string triggerEventId = 5;
+  VendorType type = 6;
+}
+
+message PersonScreening{
+  int64 id = 1; // 唯一标识
+  string chineseName = 2; // 中文名称
+  string englishName = 3; // 英文名称
+  string idNumber = 4; // idNumber
+  int32 gender = 5; // 性别
+  int64 date = 6; // 出生日期
+  string citizenship = 7; // 国籍
+  string residence = 8; // 常驻地
+  repeated string role = 9; // 角色，如UBO
+  bool withCompanySearch = 10; // 包含于企业查册
+}
+
+message CorpScreening{
+  int64 id = 1; // 唯一标识
+  string chineseName = 2; // 中文名称
+  string englishName = 3; // 英文名称
+  int64 date = 4; // 注册时间
+  string citizenship = 5; // 注册地
+  string residence = 6; // 所在地
+  repeated string role = 7; // 角色，如UBO
+  bool withCompanySearch = 8; // 包含于企业查册
+  bool isSubject = 9; // 是否是主体
+  string ciNumber = 10; // ci number
+}
+
+message DeleteOngoingRequest{
+  int64 walletId = 1;
+}
+
+message CreateAmlQuestionnaireTaskReq{
+  int64 applicationId = 1;
+  int64 corpId = 2;
+  int64 opsTrigger = 3;
+}
+
+message CloseRelateBrmsInstanceReq{
+  int64 applicationId = 1;
+  int64 corpId = 2;
+}
+
+message ManualStatusCompletedReq{
+  int64 applicationId = 1;
+}
+
+message CompensateCreateManualCaseReq {
+  repeated int64 caseIds = 1;
+}
+
+message TransferNsCaseReq {
+  repeated string corpIds = 1;
+}
+
+message QueryApplicationTimeReq{
+  int64 applicationId = 1;
+}
+
+message QueryApplicationTimeResponse{
+  int64 amlStartTime = 1;
+  int64 amlEndTime = 2;
+}
+
+message OnboardingReviewReq {
+  int64 applicationId = 1;
+  int64 corpId = 2;
+}
+
+message RiskNameScreeningResultReq {
+  int64 corpId = 1;
+}
+
+message RiskNameScreeningResultResp {
+  repeated RiskNameScreeningResultInfoDto infoDto = 1;
+}
+
+message RiskNameScreeningResultInfoDto{
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  int32 gender = 4;
+  string date = 5;
+  string idNumber = 6;
+  string citizenship = 7;
+  string permanentResidence = 8;
+  string remark = 10;
+  CoopType type = 11;
+  RiskNameScreeningResultPageDto result = 12;
+  int64 updateTime = 13;
+}
+message RiskNameScreeningResultPageDto {
+  int32 totalCount = 1;
+  repeated RiskNameScreeningResultDataDto data = 2;
+}
+
+message RiskNameScreeningResultDataDto{
+  int64 id = 1;
+  string chineseName = 2;
+  string englishName = 3;
+  int32 gender = 4;
+  repeated string date = 5;
+  repeated string idNumber = 6;
+  repeated string citizenship = 7;
+  repeated string permanentResidence = 8;
+  repeated string hitTag = 9;
+  string hitRemark = 10;
+  string hitResult = 12;
+  string profileId = 13;
+  string score = 14;
+  repeated string address = 15;
+  string title = 16;
+}
