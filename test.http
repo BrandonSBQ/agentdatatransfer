@@ -1,0 +1,42 @@
+### 风控资料聚合服务 — mock 模式测试
+###
+### 使用前提（任选其一启动服务后再点 "Send Request"）：
+###   make run                                   # 读 .env（已配 RISK_MOCK_ENABLED=true）
+###   # 或手动:
+###   set -a && . ./.env && set +a && ./build/company_oss_file_service
+###
+### company_id 实际上是上游 ecirNo：作为缓存 key 逐字使用；缓存未命中时先通过
+### getCompanyInfo(ecirCode=company_id) 解析出 corpId，再调用风控 gRPC。
+### mock 模式下 company_id 与 mock 文件名、文件 key 里的 corp 段一致。
+
+@host = https://gray-agentdatatransfer.rd.group
+@cid = USL250722003348	
+
+
+
+### 1) 风控开户详情 —— 含 4 个文件数组，会按 fileKey 从 OSS 下载并内联 base64
+POST {{host}}/risk/onboard/detail
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 2) 公司查册 —— 含 1 个文件，同样会下载并内联 base64
+POST {{host}}/risk/company/search
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 3) IDV 信息 —— 无文件
+POST {{host}}/risk/idv/info
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 4) 姓名筛查 —— 无文件（命中明细里的 repeated 字段以 JSON 数组返回）
+POST {{host}}/risk/name/screening
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}

@@ -1,0 +1,20 @@
+{
+  "riskIDVInfo": [
+    {
+      "subId": "MOCK-SUB-1",
+      "subIdType": "INDIVIDUAL",
+      "englishFirstName": "San",
+      "englishLastName": "Zhang",
+      "chineseName": "张三",
+      "gender": "M",
+      "dateOfBirth": "1990-01-01",
+      "idType": "HKID",
+      "idNumber": "A000000(0)",
+      "idIssuingJurisdiction": "HK",
+      "idIssuingAuthority": "IMMD",
+      "idDateOfIssuing": "2010-01-01",
+      "idDateOfExpiry": "2030-01-01",
+      "passStatus": 0
+    }
+  ]
+}

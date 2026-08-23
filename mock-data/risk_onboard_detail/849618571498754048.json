@@ -1,0 +1,44 @@
+{
+  "riskEntityDetail": {
+    "businessEnglishName": "Mock Corporation Ltd",
+    "businessChineseName": ".mock.test 有限公司",
+    "registerBusinessNumber": "BR-0000-MOCK",
+    "placeOfIncorporation": "Hong Kong",
+    "businessType": "Private Limited Company",
+    "companyIncorporationDate": "2024-01-01",
+    "registeredCountryRegion": "HK",
+    "registeredAddress": "Mock Address 1",
+    "primaryOperatingPlace": "Hong Kong",
+    "primaryOperatingAddress": "Mock Address 2",
+    "isRegulatedFinancialInstitution": false,
+    "isListedCompany": false,
+    "isGovernmentOwnedEnterprise": false,
+    "certificateOfIncorporationNumber": "CI-0000-MOCK",
+    "businessRegistrationCertificate": [
+      {"fileKey": "/849618571498754048/corporate/0dfbcd49-9343-4913-8c0a-c3f6e393790b.jpeg", "fileName": "business_registration.jpeg"}
+    ],
+    "certificateOfIncorporation": [
+      {"fileKey": "/849618571498754048/corporate/0dfbcd49-9343-4913-8c0a-c3f6e393790b.jpeg", "fileName": "certificate_of_incorporation.jpeg"}
+    ],
+    "memorandumAndArticlesOfAssociation": [
+      {"fileKey": "/849618571498754048/corporate/0dfbcd49-9343-4913-8c0a-c3f6e393790b.jpeg", "fileName": "memorandum_and_articles.jpeg"}
+    ],
+    "shareholderStructureDocument": [
+      {"fileKey": "/849618571498754048/corporate/0dfbcd49-9343-4913-8c0a-c3f6e393790b.jpeg", "fileName": "shareholder_structure.jpeg"}
+    ]
+  },
+  "emailAddress": "mock@example.com",
+  "shareholderList": "",
+  "riskAdditionalQuestion": {
+    "purposeOfAccountOpening": ".mock.test 开户",
+    "expectedBusinessCounterparties": "n/a",
+    "expectedVolumeOfTransactionsPerMonth": "low",
+    "handlesCustomerMoney": false
+  },
+  "riskBusinessDetails": [
+    {"locationOfBusiness": "Hong Kong", "industryDetails": "Technology", "yearsInBusiness": "1", "salesTurnoverPreviousYear": "0"}
+  ],
+  "riskKeyPeoples": [
+    {"lastNameInEnglish": "Zhang", "firstNameInEnglish": "San", "nameInChinese": "张三", "idIssuingCountryOrRegion": "HK", "idType": "PASSPORT", "idNumber": "E00000000", "isDirector": true, "isAuthorizedSignatory": true, "isUltimateBeneficialOwner": false, "actualOwnedShares": "100"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "infoDto": [
+    {
+      "id": 100,
+      "chineseName": "张三",
+      "englishName": "San Zhang",
+      "gender": 1,
+      "date": "2024-01-01",
+      "idNumber": "E00000000",
+      "citizenship": "HK",
+      "permanentResidence": "Hong Kong",
+      "remark": ".mock.test",
+      "type": 1,
+      "updateTime": 1700000000,
+      "result": {
+        "totalCount": 1,
+        "data": [
+          {
+            "id": 200,
+            "chineseName": "张三",
+            "englishName": "San Zhang",
+            "gender": 1,
+            "date": ["2024-01-01"],
+            "idNumber": ["E00000000"],
+            "citizenship": ["HK"],
+            "permanentResidence": ["Hong Kong"],
+            "hitTag": ["PEP", "SAN"],
+            "hitRemark": ".mock.test hit",
+            "hitResult": "match",
+            "profileId": "P-MOCK",
+            "score": "0.92",
+            "address": ["Mock Address"],
+            "title": "Mock Title"
+          }
+        ]
+      }
+    }
+  ]
+}

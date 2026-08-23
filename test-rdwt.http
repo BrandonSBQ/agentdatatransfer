@@ -1,0 +1,56 @@
+### 风控资料聚合服务 — RDWT
+### company_id = ecirCode
+
+#@host = https://gray-agentdatatransfer.rd.group
+#@host = http://127.0.0.1:8080
+@host = https://agentdatatransfer.dev.rdezlink.tech
+#@cid  = HKL260615000355
+#@cid = HKS260319010361
+#uat cid
+#@cid = MOL260707000720
+#@cid = HKL260624000361
+#@cid = KYL260813037771
+@cid = HKS260313000034
+
+
+
+
+### 1) Entity details — 主体详细信息
+POST {{host}}/cooperation/entity
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 2) Business details — 业务详细信息
+POST {{host}}/cooperation/business
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+### 3) Authorizations & controller — 授权与控制人
+POST {{host}}/cooperation/authorizations
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 4) Shareholding Structure — 股权结构
+POST {{host}}/cooperation/shareholders
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
+
+
+### 5) 完整档案（全量数据）
+POST {{host}}/cooperation/profile
+Content-Type: application/json
+        
+{"company_id": "{{cid}}"}
+
+
+### 6) Name Screening — 名单筛查风险结果
+POST {{host}}/screening/risk-result
+Content-Type: application/json
+
+{"company_id": "{{cid}}"}
